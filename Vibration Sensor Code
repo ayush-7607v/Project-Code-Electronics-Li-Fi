@@ -1,0 +1,21 @@
+#define vibrationPin 2  // Digital pin connected to the vibration sensor switch
+
+int vibrationState;  // Variable to store the vibration sensor state
+
+void setup() {
+  Serial.begin(9600);       // Initialize serial communication for debugging
+  pinMode(vibrationPin, INPUT);  // Set vibration sensor pin as input
+}
+
+void loop() {
+  vibrationState = digitalRead(vibrationPin);  // Read the state of the vibration sensor
+
+  // Check if vibration is detected (replace with Li-Fi data processing)
+  if (vibrationState == LOW) { // Assuming LOW indicates vibration detected
+    Serial.println("Vibration Detected!");
+  } else {
+    Serial.println("No Vibration Detected.");
+  }
+
+  delay(500); // Delay between readings
+}
