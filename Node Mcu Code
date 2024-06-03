@@ -1,0 +1,39 @@
+#define BLYNK_PRINT Serial
+#include <ESP8266WiFi.h>
+#include <BlynkSimpleEsp8266.h>
+#include <DHT.h>
+
+char auth[] = "CM31c2yu";  // Replace with your Blynk Auth Token
+char ssid[] = "Group-8";  // Replace with your WiFi SSID
+char pass[] = "12345678";  // Replace with your WiFi Password
+
+#define DHTPIN D2  // Pin where the DHT sensor is connected
+#define DHTTYPE DHT11  // DHT 11
+
+DHT dht(DHTPIN, DHTTYPE);
+BlynkTimer timer;
+
+void sendSensorData() {
+  float humidity = dht.readHumidity();
+  float temperature = dht.readTemperature();  // Reading temperature in Celsius
+
+  if (isnan(humidity) || isnan(temperature)) {
+    Serial.println("Failed to read from DHT sensor!");
+    return;
+  }
+
+  Blynk.virtualWrite(V5, humidity);  // Sending humidity to virtual pin V5
+  Blynk.virtualWrite(V6, temperature);  // Sending temperature to virtual pin V6
+}
+
+void setup() {
+  Serial.begin(9600);
+  Blynk.begin(auth, ssid, pass);
+  dht.begin();
+  timer.setInterval(2000L, sendSensorData);  // Sending sensor data every 2 seconds
+}
+
+void loop() {
+  Blynk.run();
+  timer.run();
+}
