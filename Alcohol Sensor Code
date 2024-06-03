@@ -1,0 +1,37 @@
+#include <NewPing.h>
+
+#define trigPin 10
+#define echoPin 11
+#define maxDistance 200 // Maximum measurement distance in cm
+
+NewPing sonar(trigPin, echoPin, maxDistance); // Create NewPing object
+
+int distance;
+
+void setup() {
+  Serial.begin(9600);  // Initialize serial communication for debugging
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+}
+
+void loop() {
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+
+  distance = sonar.ping(); // Measure distance
+
+  if (distance != 0) {
+    Serial.print("Distance: ");
+    Serial.println(distance);
+  } else {
+    Serial.println("Out of range");
+  }
+
+  // Li-Fi data processing and transmission based on distance (replace with your implementation)
+  // ...
+
+  delay(100);
+}
