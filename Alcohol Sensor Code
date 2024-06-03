@@ -1,0 +1,34 @@
+#define sensorPinAlcohol A0  // Analog pin for alcohol sensor (MQ-3)
+#define sensorPinIR 2        // Digital pin for IR sensor
+
+int sensorValueAlcohol;    // Variable to store alcohol sensor reading
+int sensorValueIR;        // Variable to store IR sensor reading
+int thresholdAlcohol = 700; // Threshold value for alcohol detection (adjust based on sensor calibration)
+int thresholdIR = 50;      // Threshold value for IR object detection (adjust based on sensor calibration)
+
+void setup() {
+  Serial.begin(9600);       // Initialize serial communication for debugging
+  pinMode(sensorPinAlcohol, INPUT);  // Set alcohol sensor pin as input (analog)
+  pinMode(sensorPinIR, INPUT);     // Set IR sensor pin as input (digital)
+}
+
+void loop() {
+  sensorValueAlcohol = analogRead(sensorPinAlcohol);  // Read analog value from alcohol sensor
+  sensorValueIR = digitalRead(sensorPinIR);         // Read digital value from IR sensor
+
+  // Check if alcohol level is above threshold (replace with Li-Fi data processing)
+  if (sensorValueAlcohol > thresholdAlcohol) {
+    Serial.println("Alcohol Detected!");
+  } else {
+    Serial.println("No Alcohol Detected.");
+  }
+
+  // Check if IR sensor detects an object (replace with Li-Fi data processing)
+  if (sensorValueIR == LOW) { // Assuming LOW indicates object detected
+    Serial.println("Object Detected by IR Sensor!");
+  } else {
+    Serial.println("No Object Detected by IR Sensor.");
+  }
+
+  delay(500); // Delay between readings
+}
