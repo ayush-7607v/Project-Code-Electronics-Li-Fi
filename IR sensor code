@@ -1,0 +1,21 @@
+#define sensorPinFire A0  // Analog pin for fire sensor (MQ-2)
+int sensorValueFire;     // Variable to store fire sensor reading
+int thresholdFire = 700;  // Threshold value for fire detection (adjust based on sensor calibration)
+
+void setup() {
+  Serial.begin(9600);       // Initialize serial communication for debugging
+  pinMode(sensorPinFire, INPUT);  // Set fire sensor pin as input (analog)
+}
+
+void loop() {
+  sensorValueFire = analogRead(sensorPinFire);  // Read analog value from fire sensor
+
+  // Check if smoke level is above threshold (replace with Li-Fi data processing)
+  if (sensorValueFire > thresholdFire) {
+    Serial.println("Fire Detected!");
+  } else {
+    Serial.println("No Fire Detected.");
+  }
+
+  delay(500); // Delay between readings
+}
