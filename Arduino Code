@@ -1,0 +1,87 @@
+#include <NewPing.h> // Include NewPing library for ultrasonic sensor
+
+const int trigPin = D0;   // Ultrasonic sensor trigger pin
+const int echoPin = D1;    // Ultrasonic sensor echo pin
+const int maxDistance = 200; // Maximum measurement distance in cm (adjust if needed)
+
+NewPing sonar(trigPin, echoPin, maxDistance); // Create NewPing object
+
+int distance;
+
+const int sensorPinAlcohol = A0;  // Analog pin for alcohol sensor (MQ-3)
+int sensorValueAlcohol;          // Variable to store alcohol sensor reading
+int thresholdAlcohol = 700;     // Threshold value for alcohol detection (adjust based on sensor calibration)
+
+const int sensorPinIR = D2;       // Digital pin for IR sensor
+int sensorValueIR;               // Variable to store IR sensor reading
+int thresholdIR = 50;            // Threshold value for IR object detection (adjust based on sensor calibration)
+
+const int sensorPinFire = A1;     // Analog pin for fire sensor (MQ-2)
+int sensorValueFire;             // Variable to store fire sensor reading
+int thresholdFire = 700;          // Threshold value for fire detection (adjust based on sensor calibration)
+
+const int vibrationPin = D3;      // Digital pin connected to the vibration sensor switch
+int vibrationState;             // Variable to store the vibration sensor state
+
+// Li-Fi module communication pins (replace with your specific module pins)
+const int lifiTxPin = D4;          // Li-Fi transmitter pin
+const int lifiRxPin = D5;          // Li-Fi receiver pin
+
+void setup() {
+  Serial.begin(9600);           // Initialize serial communication for debugging
+  pinMode(trigPin, OUTPUT);      // Ultrasonic sensor trigger pin
+  pinMode(echoPin, INPUT);       // Ultrasonic sensor echo pin
+  pinMode(sensorPinAlcohol, INPUT); // Alcohol sensor pin as input (analog)
+  pinMode(sensorPinIR, INPUT);     // IR sensor pin as input (digital)
+  pinMode(sensorPinFire, INPUT);   // Fire sensor pin as input (analog)
+  pinMode(vibrationPin, INPUT);   // Vibration sensor pin as input
+  pinMode(lifiTxPin, OUTPUT);     // Li-Fi transmitter pin
+  pinMode(lifiRxPin, INPUT);      // Li-Fi receiver pin (may need additional code for receiving)
+}
+
+void loop() {
+  // Ultrasonic sensor measurement
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+
+  distance = sonar.ping(); // Measure distance
+
+  // Sensor readings and data processing (replace with Li-Fi data encoding and transmission logic)
+  sensorValueAlcohol = analogRead(sensorPinAlcohol);
+  sensorValueIR = digitalRead(sensorPinIR);
+  sensorValueFire = analogRead(sensorPinFire);
+  vibrationState = digitalRead(vibrationPin);
+
+  // Example logic for indicating sensor readings in serial monitor (replace with Li-Fi data processing)
+  Serial.print("Distance: ");
+  Serial.println(distance);
+
+  if (sensorValueAlcohol > thresholdAlcohol) {
+    Serial.println("Alcohol Detected!");
+  } else {
+    Serial.println("No Alcohol Detected.");
+  }
+
+  if (sensorValueIR == LOW) { // Assuming LOW indicates object detected
+    Serial.println("Object Detected by IR Sensor!");
+  } else {
+    Serial.println("No Object Detected by IR Sensor.");
+  }
+
+  if (sensorValueFire > thresholdFire) {
+    Serial.println("Fire Detected!");
+  } else {
+    Serial.println("No Fire Detected.");
+  }
+
+  if (vibrationState == LOW) { // Assuming LOW indicates vibration detected
+    Serial.println("Vibration Detected!");
+  } else {
+    Serial.println("No Vibration Detected.");
+  }
+
+  delay(500); // Delay between readings
+}
